@@ -7,6 +7,79 @@
     <title>Creative Invitation</title>
     <style>
 
+        /* Preloader styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffb84d; /* Preloader background color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000; /* High z-index to overlay everything */
+        }
+
+        #preloader .loader {
+            text-align: center;
+        }
+
+        #preloader .loader-text {
+            font-family: Arial, sans-serif;
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        #preloader .progress-bar {
+            width: 80%;
+            height: 10px;
+            background: #ffd700;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #preloader .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff6666, #ffb84d);
+            animation: loading 3s linear forwards;
+        }
+
+        @keyframes loading {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        /* Main content is hidden until fully loaded */
+        body.loaded #preloader {
+            display: none;
+        }
+
+        body:not(.loaded) {
+            overflow: hidden; /* Prevent scrolling while preloading */
+        }
+
         /* Load Custom Fonts */
         @font-face {
             font-family: '0KDNAMAL';
@@ -367,6 +440,14 @@
 <body>
     <canvas id="fireworkCanvas"></canvas>
 
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader">
+            <div class="loader-text">Loading, please wait...</div>
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
     <!-- Countdown Timer -->
     <div id="countdown">
         <h1>Event Countdown</h1>
@@ -418,6 +499,11 @@
     </section>
 
     <script>
+
+        // Wait for the window to load fully
+        window.addEventListener("load", () => {
+            document.body.classList.add("loaded");
+        });
 
         // Set the event date
     // Set the event date in UTC and convert it to Sri Lankan local time
